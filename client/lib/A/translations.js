@@ -1,0 +1,1 @@
+var translations={en:{titlePage:"",btnStart:"",Description:""},es:{titlePage:"",btnStart:"",Description:""}};
