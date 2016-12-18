@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="game">
+<html>  <!--ng-app="game" -->
     <head>
         <title>Juego Platformer 0.6 Beta</title>
         <meta charset="UTF-8">
@@ -17,27 +17,20 @@
     </head>
     <body >
         <div class="panel title">HOLA HOLA</div>
+        <div><canvas id="canvas1"></canvas></div>
                  <script src="/scripts/jquery/dist/jquery.min.js"></script>
                  <script src="/scripts/angular/angular.min.js"></script>
                  <script src="/scripts/angular-cookies/angular-cookies.min.js"></script>
                  <script src="/scripts/bootstrap/dist/js/bootstrap.min.js"></script>
-            <script src="/lib/js/input.js"></script>      
-            <script src="/lib/js/character.js"></script>       
-            <script src="/lib/js/object.js"></script>  
-            <script src="/lib/js/background.js"></script>  
-            <script src="/lib/js/creature.js"></script>  
-            <script src="/lib/js/objective.js"></script> 
-            <script src="/lib/js/collectable.js"></script>              
-            <script src="/lib/js/canvas.js"></script>  
-            <script src="/lib/js/game.js"></script>   
-            <script src="/lib/js/controllerBox.js"></script>
-            <script src="/lib/js/screenplay.js"></script>  
-            <script src="/lib/js/sprites.js"></script>  
-            <script src="/lib/js/loader.js"></script>
-            <script src="/lib/A/dataLoader.js"></script>             
-            <script src="/lib/A/game1.js"></script> 
-                 <script src="/lib/js/main.js"></script>                             
-                 <div><viewcookie>placeholder</viewcookie></div>
-                 <div><game_canvas>placeholder</game_canvas></div>                 
+                 <script src="/scripts/lodash/lodash.js"></script>
+                 <script src="/lib/Game/config/common.js"></script>
+                   <script src="/lib/Game/lib/gameVector.js"></script>
+                 <script src="/lib/Game/lib/gameCanvas.js"></script>
+                 <script src="/lib/Game/lib/gameInput.js"></script>
+                 <script src="/lib/Game/game.js"></script>
+                 <script>
+                        var game1 = new game('canvas1', 'game1'); 
+                        game1.overRender();
+                 </script>   
     </body>
 </html>

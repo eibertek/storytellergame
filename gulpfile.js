@@ -26,6 +26,16 @@
 		}))
 			.pipe(gulp.dest('built/local'));
 	});
+
+	gulp.task('frontend', function () {
+		console.log('Exportando Typescript');
+		return gulp.src('src/frontend/lib/Game/**/*.ts')
+			.pipe(ts({
+			noImplicitAny: false
+		}))
+			.pipe(gulp.dest('./client/lib/Game/'));
+	});
+	
 	gulp.task('copy', function () {
 		gulp.src('./src/frontend/**/*.html')
 			.pipe(gulp.dest('./client'));
