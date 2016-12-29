@@ -1,3 +1,12 @@
+/// <reference path="config/common.ts" />
+/// <reference path="lib/gameVector.ts" />
+/// <reference path="lib/gameCanvas.ts" />
+/// <reference path="lib/gameInput.ts" />
+/// <reference path="lib/sprites.ts" />
+
+interface Window { input: any; mozRequestAnimationFrame:any; webkitRequestAnimationFrame:any; }
+
+window.input = window.input || {};
 
 class game {
     date= new Date();
@@ -29,7 +38,7 @@ class game {
         this.canvas = new gameCanvas(canvasId);
         this.nameId = nameId;
         let self = this;
-        this.input = new gameInput(self);
+        window.input = new gameInput(self);
     };
 
     public isMobile(){
@@ -103,36 +112,21 @@ class game {
             this.players[c].animate(displaceX);
         } 
     };
-    handlerKeyDown = function(e) {
-         this.self.input.onKeyDown(e);
-            }
-    handlerKeyUp = function(e) {
-         this.self.input.onKeyUp(e);
-            }
-    handlerMouseMove = function(e){
-         this.self.input.mouseMove(e);
-    }
-    handlerMouseDown = function(e){
-        this.self.input.mouseDown(e);
-    }
-    handlerMouseUp = function(e){
-        this.self.input.mouseUp(e);
-    }    
    disableInput(){
                 this.pauseInput= true;
-                document.body.removeEventListener("keydown",this.handlerKeyDown);
-                document.body.removeEventListener("keyup",this.handlerKeyUp);
+                document.body.removeEventListener("keydown",window.input.onKeyDown);
+                document.body.removeEventListener("keyup",window.input.onKeyUp);
     };
    enableInput(){
         this.pauseInput= false;
         console.log(eval(this.nameId));
-        this.canvas.addEventListener("keydown",this.handlerKeyDown);
-        this.canvas.addEventListener("keyup", this.handlerKeyUp);
+       document.body.addEventListener("keydown",window.input.onKeyDown);
+       document.body.addEventListener("keyup", window.input.onKeyUp);
     };
     enableMouse(){
-        document.body.addEventListener("mousemove",this.handlerMouseMove);
-        document.body.addEventListener("mousedown",this.handlerMouseDown);
-        document.body.addEventListener("mouseup", this.handlerMouseUp);
+        document.body.addEventListener("mousemove",window.input.mouseMove);
+        document.body.addEventListener("mousedown",window.input.mouseDown);
+        document.body.addEventListener("mouseup", window.input.mouseUp);
     };
     renderMainScreen(){
         this.titleScreen= true;
@@ -165,7 +159,7 @@ class game {
     removeCreature(id){
         for (var i = 0; i < this.creatures.length; i++) {
             if(this.creatures[i].id==id){
-                if(typeof(this.creatures[i].objectives.onDie)==='function') game.creatures[i].objectives.onDie();                
+                if(typeof(this.creatures[i].objectives.onDie)==='function') this.creatures[i].objectives.onDie();
                 this.creatures.splice(i,1); 
                 return true;
             }
@@ -225,14 +219,16 @@ class game {
         }    
     }
 
-    overRender(){
+    render(){
         var self = this;
         this.canvas.clearAll();
         this.canvas.drawText('Day: '+new Date().getSeconds(),{color:'#000', x:1, y:30,font:'30px Arial'});
         requestAnimationFrame(function(){
-                            self.overRender();
+                            self.render();
                         });          
     }
+
+    
 }
 
 (function () {

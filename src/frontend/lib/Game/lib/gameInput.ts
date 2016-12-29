@@ -62,97 +62,118 @@ class gameInput
     offsetY= 0;
     mobile= false;
     parent = null;
+    self = window.input;
     constructor(game){
         this.parent = game;
        console.log(this.parent);
     }
     movingKeyMappingDown(){
-        if (this.key_code[38]===true || this.key_code[87]===true) this.move.up = true;
-        if (this.key_code[this.key_down]===true || this.key_code[this.key_s]===true) this.move.down = true;                    
-        if (this.key_code[39]===true || this.key_code[68]===true) this.move.right = true;
-                if (this.key_code[37]===true || this.key_code[65]===true) this.move.left = true;
-                if (this.key_code[this.key_c]===true ) this.move.attack = true;
-        console.log(this.move);
+        var self = window.input;
+        if (self.key_code[38]===true || self.key_code[87]===true) self.move.up = true;
+        if (self.key_code[self.key_down]===true || self.key_code[self.key_s]===true) self.move.down = true;
+        if (self.key_code[39]===true || self.key_code[68]===true) self.move.right = true;
+                if (self.key_code[37]===true || self.key_code[65]===true) self.move.left = true;
+                if (self.key_code[self.key_c]===true ) self.move.attack = true;
+        console.log(self.move);
     };
     movingKeyMappingUp(){
-        if (this.key_code[38]===false || this.key_code[87]===false) this.move.up = false;
-        if (this.key_code[this.key_down]===false || this.key_code[this.key_s]===false) this.move.down = false;                                        
-        if (this.key_code[39]===false || this.key_code[68]===false) this.move.right = false;
-                if (this.key_code[37]===false || this.key_code[65]===false) this.move.left = false;
-                if (this.key_code[this.key_c]===false ) this.move.attack = false;
+        var self = window.input;
+        if (self.key_code[38]===false || self.key_code[87]===false) self.move.up = false;
+        if (self.key_code[self.key_down]===false || self.key_code[self.key_s]===false) self.move.down = false;
+        if (self.key_code[39]===false || self.key_code[68]===false) self.move.right = false;
+                if (self.key_code[37]===false || self.key_code[65]===false) self.move.left = false;
+                if (self.key_code[self.key_c]===false ) self.move.attack = false;
     };
     movingTouchMappingDown(){
-            var topy=this.parent.canvas.container.height;
-                var topx=this.parent.canvas.container.width;
-                if (this.touchSection(0,150,topy-90, topy-45)) this.move.up = true;
-                if (this.touchSection(0,75,topy-40, topy)) this.move.left = true;
-                if (this.touchSection(76,150,topy-39, topy)) this.move.right = true;
-                if (this.touchSection(topx-100,topx,topy-90, topy)) this.move.attack = true;
+            var self = window.input;
+            var topy=self.parent.canvas.container.height;
+                var topx=self.parent.canvas.container.width;
+                if (self.touchSection(0,150,topy-90, topy-45)) self.move.up = true;
+                if (self.touchSection(0,75,topy-40, topy)) self.move.left = true;
+                if (self.touchSection(76,150,topy-39, topy)) self.move.right = true;
+                if (self.touchSection(topx-100,topx,topy-90, topy)) self.move.attack = true;
     };
     movingTouchMappingUp(){
-        var topy=this.parent.canvas.container.height;
-        var topx=this.parent.canvas.container.width;
-        if (!this.touchSection(0,90,topy-60, topy-40)) this.move.up = false;
-        if (!this.touchSection(0,50,topy-39, topy)) this.move.left = false;
-        if (!this.touchSection(60,90,topy-39, topy)) this.move.right = false;
-        if (!this.touchSection(topx-100,topx,topy-60, topy)) this.move.attack = false;
+        var self = window.input;
+        var topy=self.parent.canvas.container.height;
+        var topx=self.parent.canvas.container.width;
+        if (!self.touchSection(0,90,topy-60, topy-40)) self.move.up = false;
+        if (!self.touchSection(0,50,topy-39, topy)) self.move.left = false;
+        if (!self.touchSection(60,90,topy-39, topy)) self.move.right = false;
+        if (!self.touchSection(topx-100,topx,topy-60, topy)) self.move.attack = false;
         };
     actionTouchMappingDown(){
-        var btnStart = {x1:0, y1:0, x2:this.parent.canvas.container.width, y2:this.parent.canvas.container.height};
-        if (this.touchSection(btnStart.x1,btnStart.x2,btnStart.y1, btnStart.y2)) this.actions.btnStart = true;
+        var self = window.input;
+        var btnStart = {x1:0, y1:0, x2:self.parent.canvas.container.width, y2:self.parent.canvas.container.height};
+        if (self.touchSection(btnStart.x1,btnStart.x2,btnStart.y1, btnStart.y2)) self.actions.btnStart = true;
+        console.log(self.move);
+
     };
     actionTouchMappingUp(){
-        var btnStart = {x1:0, y1:0, x2:this.parent.canvas.container.width, y2:this.parent.canvas.container.height};
-        if (!this.touchSection(btnStart.x1,btnStart.x2,btnStart.y1, btnStart.y2)) this.actions.btnStart = false;
+        var self = window.input;
+        var btnStart = {x1:0, y1:0, x2:self.parent.canvas.container.width, y2:self.parent.canvas.container.height};
+        if (!self.touchSection(btnStart.x1,btnStart.x2,btnStart.y1, btnStart.y2)) self.actions.btnStart = false;
     };
     cinematicsTouchMappingDown(){
-        var topy=this.parent.canvas.container.height;
-        var topx=this.parent.canvas.container.width;
-        if (this.touchSection(0,180,topy-100, topy-50)) this.move.up = true;
-        if (this.touchSection(0,180,topy-49, topy)){
-            this.move.down = true;
+        var self = window.input;
+        var topy=self.parent.canvas.container.height;
+        var topx=self.parent.canvas.container.width;
+        // abstraer las direcciones espaciales de las opciones.
+        if (self.touchSection(0,180,topy-100, topy-50)) self.move.up = true;
+        if (self.touchSection(0,180,topy-49, topy)){
+            self.move.down = true;
         }
-        if (this.touchSection(topx-100,topx,topy-60, topy)) this.move.attack = true;
+        if (self.touchSection(topx-100,topx,topy-60, topy)) self.move.attack = true;
     };
     cinematicsTouchMappingUp(){
-        var topy=this.parent.canvas.container.height;
-        var topx=this.parent.canvas.container.width;
-        if (!this.touchSection(0,180,topy-100, topy-50)) this.move.up = false;
-        if (!this.touchSection(0,180,topy-49, topy)){
-                    this.move.down = false;
+        var self = window.input;
+        var topy=self.parent.canvas.container.height;
+        var topx=self.parent.canvas.container.width;
+        // abstraer las direcciones espaciales de las opciones.
+        if (!self.touchSection(0,180,topy-100, topy-50)) self.move.up = false;
+        if (!self.touchSection(0,180,topy-49, topy)){
+                    self.move.down = false;
         }
-        if (!this.touchSection(topx-100,topx,topy-60, topy)) this.move.attack = false;
+        if (!self.touchSection(topx-100,topx,topy-60, topy)) self.move.attack = false;
     };
     onKeyDown(event, preventDefault){
-        this.prevent_default = preventDefault ? true : false;
-        this.key_code[event.keyCode]=true;
-        this.movingKeyMappingDown();
-        if(this.prevent_default && this.key_code[114] )   event.preventDefault();
+        var self = window.input;
+        self.prevent_default = preventDefault ? true : false;
+        self.key_code[event.keyCode]=true;
+        self.movingKeyMappingDown();
+        if(self.prevent_default && self.key_code[114] )   event.preventDefault();
         return true;
     };
     onKeyUp(event){
-        this.key_code[event.keyCode] = false;
-        this.movingKeyMappingUp();
+        var self = window.input;
+        self.key_code[event.keyCode] = false;
+        self.movingKeyMappingUp();
         return true;
     }; 
     mouseMove(event, preventDefault){
-        this.mouse.x = event.offsetX;
-        this.mouse.y = event.offsetY;
-        this.mouse.clicked = (event.which == 1 && !this.mouse.down);
-        this.mouse.down = ( event.which == 1 );
+        var self = window.input;
+        self.mouse.x = event.offsetX;
+        self.mouse.y = event.offsetY;
+        self.mouse.clicked = (event.which == 1 && !self.mouse.down);
+        self.mouse.down = ( event.which == 1 );
+        console.log(self.mouse);
     };
     mouseDown(event, preventDefault){
-        this.mouse.clicked = !this.mouse.down;
-        this.mouse.down = true;
+        var self = window.input;
+        self.mouse.clicked = !self.mouse.down;
+        self.mouse.down = true;
+        console.log(self.mouse);
     };
     mouseUp(event, preventDefault){
-        this.mouse.clicked = false;
-        this.mouse.down = false;
+        var self = window.input;
+        self.mouse.clicked = false;
+        self.mouse.down = false;
     };
     touchSection(x1,x2,y1,y2){
-        for(var c=0; c < this.touches.length; c++){
-            var actualx = this.touches[c].clientX;
-            var actualy = this.touches[c].clientY;
+        var self = window.input;
+        for(var c=0; c < self.touches.length; c++){
+            var actualx = self.touches[c].clientX;
+            var actualy = self.touches[c].clientY;
             if( actualx >=x1 && actualx <=x2
                 && actualy >=y1 && actualy <=y2 ) {
                     return true;
@@ -160,13 +181,15 @@ class gameInput
         }
     };
     clearKeys(){
-        this.key_code=[];
-        this.key_press=[];
-        this.touches=[];
-        this.cinematicsTouchMappingUp();
-        this.movingTouchMappingUp();
+        var self = window.input;
+        self.key_code=[];
+        self.key_press=[];
+        self.touches=[];
+        self.cinematicsTouchMappingUp();
+        self.movingTouchMappingUp();
     };
     isTouching(x, y, shapeA) {
+        var self = window.input;
         // get the vectors to check against
         var vX = (shapeA.position.x + (shapeA.width / 2)) - x,
             vY = (shapeA.position.y + (shapeA.height / 2)) - y,
@@ -196,7 +219,8 @@ class gameInput
         return colDir;
     };
     setTouchEvents() {
-        var _this = this;
+        var self = window.input;
+        var _this = self;
 
         var setTouches = function(e){
             // Microsoft always has to have their own stuff...
@@ -209,10 +233,10 @@ class gameInput
                     clientY: e.clientY
                 };
             } else _this.touches = e.touches || [];
-            if(this.parent.isMobile()){
-                if(this.parent.titleScreen===true){
+            if(self.parent.isMobile()){
+                if(self.parent.titleScreen===true){
                     _this.actionTouchMappingDown();
-                }else if(this.parent.cinematics===true){
+                }else if(self.parent.cinematics===true){
                     _this.cinematicsTouchMappingDown();
                 }else{
                     _this.movingTouchMappingDown();
@@ -232,10 +256,10 @@ class gameInput
                 e.pointerType === e.MSPOINTER_TYPE_TOUCH ) {
                 delete _this.touches[ e.pointerId ];
             } else _this.touches = e.touches || [];
-            if(this.parent.isMobile()){
-                if(this.parent.titleScreen===true){
+            if(self.parent.isMobile()){
+                if(self.parent.titleScreen===true){
                     _this.actionTouchMappingUp();
-                }else if(this.parent.cinematics===true){
+                }else if(self.parent.cinematics===true){
                     _this.cinematicsTouchMappingUp();
                 }else{
                     _this.movingTouchMappingUp();
@@ -259,23 +283,24 @@ class gameInput
         }
     };
     toKeyString(keycode){
+        var self = window.input;
         switch(keycode){
-            case this.key_left:
+            case self.key_left:
                     return 'LEFT';
-            case this.key_up:
+            case self.key_up:
                     return 'UP';
-            case this.key_down:
+            case self.key_down:
                     return 'DOWN';
-            case this.key_right:
+            case self.key_right:
                     return 'RIGHT';
-            case this.key_space:
+            case self.key_space:
                     return 'SPACE';
-            case this.key_enter:
+            case self.key_enter:
                     return 'ENTER';
-            case this.key_backspace:
+            case self.key_backspace:
                     return 'BACKSPACE';                        
             default:   
-                    return String.fromCharCode(this.key_code);
+                    return String.fromCharCode(self.key_code);
         }
     }
 }
