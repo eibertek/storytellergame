@@ -28,7 +28,7 @@
 	});
 
 	gulp.task('frontend', function () {
-		console.log('Exportando Typescript');
+		console.log('Exportando Typescript 2');
 		return gulp.src('src/frontend/lib/Game/**/*.ts')
 			.pipe(ts({
 			noImplicitAny: false
@@ -156,9 +156,13 @@
 			gulp.run('sass');
 		});
 		// make my JavaScript ugly
-		gulp.watch("./src/frontend/lib/**/*.js", function(event){
+		gulp.watch("./src/frontend/lib/**/**/*.js", function(event){
+			console.log('running uglify');
+			gulp.run('copy');
+		});
+		gulp.watch("./src/frontend/lib/**/**/*.ts", function(event){
 			console.log('running uglify');
 			gulp.run('frontend');
-		//	gulp.run('uglify');
 		});
+
 	});
