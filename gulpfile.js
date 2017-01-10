@@ -39,6 +39,8 @@
 	gulp.task('copy', function () {
 		gulp.src('./src/frontend/**/*.html')
 			.pipe(gulp.dest('./client'));
+		gulp.src('./src/frontend/lib/**/**/*.js')
+			.pipe(gulp.dest('./client/lib'));
 		gulp.src('./src/frontend/assets/**/*')
 			.pipe(gulp.dest('./client/assets'));
 		return true;		
@@ -142,7 +144,13 @@
 			return true;
 	});
 
-
+	gulp.task('ci', function(){
+		// make my JavaScript ugly
+		gulp.watch("./src/frontend/lib/**/**/*.js", function(event){
+			console.log('running uglify');
+			gulp.run('copy');
+		});
+	});
 	gulp.task('default', function(){
 
 		// watch me getting Sassy
@@ -162,7 +170,7 @@
 		});
 		gulp.watch("./src/frontend/lib/**/**/*.ts", function(event){
 			console.log('running uglify');
-			gulp.run('frontend');
+		//	gulp.run('frontend');
 		});
 
 	});

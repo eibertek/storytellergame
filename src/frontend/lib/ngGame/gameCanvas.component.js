@@ -1,16 +1,31 @@
 
 var app = angular.module('game', ['ngCookies']);
-app.factory('spritemanager', function(name1){
-    this.name = name1;
-    return this.name;
-});
+app.service('spritemanager',[ function(name1){
+    return function(name1){
+        this.name = name1;
+        this.hello = function(){
+            return this.name;
+        }
+    }
+    }]
+);
+app.factory('notify', ['$window', function(win) {
+    var msgs = [];
+    return function(msg) {
+        msgs.push(msg);
+        if (msgs.length === 3) {
+            win.alert(msgs.join('\n'));
+            msgs = [];
+        }
+    };
+}]);
 
 app.component('gameCreator', {
     template: '<game_canvas></game_canvas>',
     controller: ['$cookies', function($cookie, spritemanager){
-        this.config = {'id':"canvas1", 'width':screen.width, 'height':'200px'}
+        this.config = {'id':"canvas1", 'width':screen.width, 'height':'800px'}
         this.$onInit = function(){
-            console.log(this); //sss
+          //  console.log(this); //sss
         }
     }]
 });
@@ -19,21 +34,23 @@ app.component('gameCreator', {
 app.component('gameCanvas', {
     template: '<canvas id="{{$ctrl.config.id}}" width="{{$ctrl.config.width}}" height="{{$ctrl.config.height}}"></canvas>' +
     '<button ng-click="$ctrl.drawRectangle()">Dibujar</button>',
-    controller: ['$cookies', '$timeout', function($cookie, $timeout, spritemanager){
+    controller: ['$cookies', '$timeout', 'spritemanager', function($cookie, $timeout, spritemanager){
         this.config = {'id':"canvas1", 'width':screen.width, 'height':'500px'}
         this.ctx = null;
-        this.rect = {x:5, y:5, width: 90, height: 15, orientation:1, velocity:1};
+        this.rect = {x:5, y:5, width: 90, height: 15, orientation:1, velocity:1, name:'SQ'};
         this.objects = [];
         this.$onInit = function(){
             var self = this;
             $timeout(function(){
                 self.container = document.getElementById(self.config.id);
                 self.ctx = self.container.getContext('2d');
-                for(var i = 1; i< 240; i++)
+                for(var i = 1; i< 10; i++)
                 {
                     var copy = angular.copy(self.rect);
-                    copy.velocity=10+Math.random()*10;
-                    copy.y = copy.height*i + 15*i;
+                    if(i%2==0)
+                        copy.text = 'SQ_'+i;
+                    copy.velocity=30+Math.random()*10;
+                    copy.y = copy.height*i;
                     self.objects.push(copy);
                 }
                 self.draw();
@@ -45,11 +62,11 @@ app.component('gameCanvas', {
             var self = this;
             this.objects.forEach(function(object1){
                 self.drawRectangle(object1);
-                console.log(object1.x , object1.x + object1.width, self.config.width);
                 if(object1.x < 0 || object1.x + object1.width > self.config.width )
                     object1.orientation*= -1;
                 object1.x+=object1.velocity*object1.orientation;
             });
+            self.drawSprite();
             $timeout(function(){
                 self.draw();
             }, 1);
@@ -64,10 +81,17 @@ app.component('gameCanvas', {
             this.ctx.rect(obj1.x, obj1.y, obj1.width, obj1.height);
             this.ctx.strokeStyle = '#000';
             this.ctx.stroke();
-            this.ctx.font = '10px Arial';
-            this.ctx.strokeText('SQUARE', obj1.x, obj1.y + obj1.height+10);
+            this.ctx.font = '8px Arial';
+            if(obj1.text && obj1.text!=''){
+                this.ctx.strokeText(obj1.text, obj1.x, obj1.y + obj1.height+10);
+            }
             this.ctx.closePath();
         }
+
+        this.drawSprite = function(obj1){
+            var sm = new spritemanager('aaaa');
+            console.log(sm.hello());
+        };
     }]
 });
 
