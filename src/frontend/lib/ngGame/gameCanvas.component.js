@@ -1,94 +1,5 @@
 
-angular.module('game', ['ngCookies'])
-.service('spritemanager',[ function(image, frameWidth, frameHeight){
-    return function(image, frameWidth, frameHeight){
-        this.spriteSheet = null;
-        this.image = image;
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
-        var root = this;
-        this.init = function() {
-            root.framesPerRow = Math.floor(root.image.width / root.frameWidth);
-            root.spriteSheet = this;
-        }
-
-        this.Animation = function(frameSpeed, startFrame, endFrame, runOnce) {
-            var animationSequence = [];  // array holding the order of the animation
-            var currentFrame = 1;        // the current frame to draw
-            var counter = 0;             // keep track of frame rate
-            this.endAnimation=false;
-            this.debugInfo = [];
-            self = this;
-            var runOnceTemp = (typeof(runOnce) !== "undefined") ? runOnce  : false;
-            // create the sequence of frame numbers for the animation
-            for (var frameNumber = startFrame; frameNumber <= endFrame; frameNumber++){
-                animationSequence.push(frameNumber);
-           //     console.log(frameNumber, currentFrame, animationSequence);
-            }
-            // Update the animation
-            this.update = function() {
-                if(runOnceTemp && self.endAnimation){
-                    self.debugInfo = [self.endAnimation,currentFrame, endFrame];
-                    return false;
-                }
-                // update to the next frame if it is time
-                if (counter == (frameSpeed - 1))
-                    currentFrame = (currentFrame + 1) % animationSequence.length;
-                // update the counter
-            //    console.log(currentFrame, counter, animationSequence.length);
-                counter = (counter + 1) % frameSpeed;
-            };
-
-            // draw the current frame
-            this.draw = function(x, y) {
-                // get the row and col of the frame
-                var row = Math.floor(animationSequence[currentFrame] / root.framesPerRow);
-                var col = Math.floor(animationSequence[currentFrame] % root.framesPerRow);
-            //    console.log(col, row, animationSequence[currentFrame]);
-             /*   console.log({ frames: root.framesPerRow,  col:col, row:row, img:root.image,
-                    sx:col * root.frameWidth,
-                    sy:row * root.frameHeight,
-                    sw:root.frameWidth,
-                    sh:root.frameHeight,
-                    x:x,
-                    y:y,
-                    w:root.frameWidth,
-                    h:root.frameHeight
-                });*/
-                return { img:root.image,
-                        sx:Math.random()*10, // desplazamiento en x interno
-                        sy:row * 0,  // desplazamiento en y interno
-                        sw:root.frameWidth, //dimenxion x interna
-                        sh:root.frameHeight, // dimension y interna
-                        x:x,
-                        y:y,
-                        w:root.frameWidth,
-                        h:root.frameHeight
-                }
-            };
-
-            this.reset = function(){
-                self.endAnimation=false;
-                currentFrame = 0;
-                counter = 0;
-            };
-        }
-        this.init();
-        return this;
-    }
-    }]
-)
-.factory('notify', ['$window', function(win) {
-    var msgs = [];
-    return function(msg) {
-        msgs.push(msg);
-        if (msgs.length === 3) {
-            win.alert(msgs.join('\n'));
-            msgs = [];
-        }
-    };
-}])
-.component('gameCreator', {
+angular.module('game').component('gameCreator', {
     template: '<game_canvas></game_canvas>',
     controller: ['$cookies', function($cookie, spritemanager){
         this.config = {'id':"canvas1", 'width':screen.width, 'height':'800px'}
@@ -105,7 +16,7 @@ images.trashcan.src =  '/assets/img/trashcan.PNG';
 angular.module('game').component('gameCanvas', {
     template: '<canvas id="{{$ctrl.config.id}}" width="{{$ctrl.config.width}}" height="{{$ctrl.config.height}}"></canvas>' +
     '<button ng-click="$ctrl.drawRectangle()">Dibujar</button>',
-    controller: ['$cookies', '$timeout', 'spritemanager', function($cookie, $timeout, spritemanager){
+    controller: ['$cookies', '$timeout', 'spritemanager', 'gameObject', function($cookie, $timeout, spritemanager, gameObject){
         this.config = {'id':"canvas1", 'width':screen.width, 'height':'500px'}
         this.ctx = null;
         this.rect = {x:5, y:5, width: 131, height: 154, orientation:1, velocity:1, name:'SQ'};
@@ -120,12 +31,14 @@ angular.module('game').component('gameCanvas', {
                     var copy = angular.copy(self.rect);
                     if(i%2==0)
                         copy.text = 'SQ_'+i;
-                    copy.velocity=01+Math.random();
-                    copy.y = copy.height*i;
-                    var img = images.trashcan;
+                        copy.velocity=01+Math.random();
+                        copy.y = copy.height*i;
+                        var img = images.trashcan;
                         copy.spritesheet = new spritemanager(img, 131, 154);
                         copy.spritesheet.idle = new copy.spritesheet.Animation( 14, 1, 1, true);
                         self.objects.push(copy);
+                     var copy = new gameObject(20,20);
+                     console.log(copy);
                 }
                 self.draw();
             },100);
