@@ -41,9 +41,8 @@ angular.module('game', ['ngCookies'])
                 // get the row and col of the frame
                 var row = Math.floor(animationSequence[currentFrame] / root.framesPerRow);
                 var col = Math.floor(animationSequence[currentFrame] % root.framesPerRow);
-
                 return { img:root.image,
-                        sx:Math.random()*10, // desplazamiento en x interno
+                        sx:col*0, // desplazamiento en x interno
                         sy:row * 0,  // desplazamiento en y interno
                         sw:root.frameWidth, //dimenxion x interna
                         sh:root.frameHeight, // dimension y interna

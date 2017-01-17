@@ -26,19 +26,12 @@ angular.module('game').component('gameCanvas', {
             $timeout(function(){
                 self.container = document.getElementById(self.config.id);
                 self.ctx = self.container.getContext('2d');
-                for(var i = 0; i< 4; i++)
+                for(var i = 0; i< 2; i++)
                 {
-                    var copy = angular.copy(self.rect);
-                    if(i%2==0)
-                        copy.text = 'SQ_'+i;
-                        copy.velocity=01+Math.random();
-                        copy.y = copy.height*i;
-                        var img = images.trashcan;
-                        copy.spritesheet = new spritemanager(img, 131, 154);
-                        copy.spritesheet.idle = new copy.spritesheet.Animation( 14, 1, 1, true);
-                        self.objects.push(copy);
-                     var copy = new gameObject(20,20);
-                     console.log(copy);
+                    var img = images.trashcan;
+                    var copy = new gameObject({x:30,y:154*i,img:img, width:131, height:154});
+                    copy.name ='OBJETO__'+i;
+                    self.objects.push(copy);
                 }
                 self.draw();
             },100);
@@ -48,10 +41,12 @@ angular.module('game').component('gameCanvas', {
             this.clearAll();
             var self = this;
             this.objects.forEach(function(object1){
-                self.drawRectangle(object1);
-                if(object1.x < 0 || object1.x + object1.width > self.config.width )
-                    object1.orientation*= -1;
-                object1.x+=object1.velocity*object1.orientation;
+          //      self.drawRectangle(object1);
+                if(object1.x < 0 || object1.x + object1.width + 100 > self.config.width ){
+                    object1.physics.orientation*= -1;
+                    console.log(object1.name, object1.x);
+                }
+                object1.x+=object1.physics.velX * object1.physics.orientation;
                 self.drawSprite(object1);
             });
             // values.sx, values.sy, values.sw, values.sh, values.x, values.y, values.w, values.h
@@ -67,7 +62,7 @@ angular.module('game').component('gameCanvas', {
                     200);*/
             $timeout(function(){
                 self.draw();
-            }, 1);
+            }, 10);
         }
 
         this.clearAll = function() {
@@ -102,7 +97,6 @@ angular.module('game').component('gameCanvas', {
             }
         };
         this.drawSpriteImage = function(values){
-         //   console.log(values.img,this.ctx);
             if(values.img===null || values.img=="") return false;
             this.ctx.drawImage(values.img, values.sx, values.sy, values.sw, values.sh, values.x, values.y, values.w, values.h);
         };

@@ -1,16 +1,23 @@
 angular.module('game').factory('gameObject', ['$window','spritemanager', function(win, spritemanager) {
-    var rect = {x:5, y:5, width: 131, height: 154, orientation:1, velocity:1, name:'SQ'};
-    var go = function(x,y){
-      this.values = {};
-      this.model = null;
-      this.init = function(x,y) {
-                    this.values = rect;
-                    this.values.x = x;
-                    this.values.y = y;
-                    this.model = new creature_model();
+    var go = function(a){
+      this.extends = creature_model;
+      this.extends.width = a.width;
+      this.extends.height = a.height;
+      this.extends.img= a.img;
+      this.extends.x = a.x;
+      this.extends.y = a.y;
+      this.init = function(a) {
+                    if(this.extends != null && typeof this.extends != undefined ){
+                        for (var attrname in this.extends)
+                            this[attrname]= this.extends[attrname];
+                    }
+                    this.physics.velX = Math.random()*10;
+                    this.spritesheet = new spritemanager(this.img, this.width, this.height);
+                    this.spritesheet.idle = new this.spritesheet.Animation( 14, 1, 1, true);
+          console.log(this, a);
                     return this;
         };
-       this.init(x,y);
+       this.init(a);
     }
     return go;
 }]);

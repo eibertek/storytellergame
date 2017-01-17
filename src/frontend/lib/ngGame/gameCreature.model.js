@@ -1,12 +1,7 @@
 creature_model = {
-    hero:'AAAA'
+    hero:'AAAA',
+    attack:function(){
+        return this.name+' IS ATTACKING';
+    }
 }
-creature_model = extendobject(creature_model, object_model);
-console.log(creature_model);
-
-function extendobject(obj1,obj2){
-    var obj3 = {};
-    for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
-    for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
-    return obj3;
-}
+creature_model = angular.extend(creature_model, object_model);
