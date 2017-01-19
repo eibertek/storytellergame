@@ -1,5 +1,4 @@
 creature_model = {
-    hero:'AAAA',
     attack:function(){
         return this.name+' IS ATTACKING';
     }
